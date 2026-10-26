@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#b64f6c">
+<title>Tanuja Beauty Parlour | Services & Booking</title>
+<style>
+:root{--pink:#fff1f4;--rose:#b64f6c;--deep:#762b43;--gold:#b58a3a;--ink:#39252b}
+*{box-sizing:border-box}body{margin:0;background:#fff9fa;color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+header{background:linear-gradient(135deg,#fff4f6,#f4d3dc);border-bottom:1px solid #e5c27d;padding:22px 16px;text-align:center}
+.brand{font-family:Georgia,serif;font-style:italic;font-size:clamp(34px,7vw,52px);color:var(--gold);margin:0}
+.sub{letter-spacing:3px;text-transform:uppercase;color:var(--deep);font-size:12px;margin-top:4px}
+.tagline{margin:12px 0 0;color:#754653}
+.hero{max-width:960px;margin:auto;padding:22px 16px 10px;text-align:center}
+.hero h1{font-family:Georgia,serif;font-size:clamp(25px,5vw,38px);font-weight:normal;color:var(--deep);margin:8px 0}
+.hero p{line-height:1.5;color:#755761}
+.pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:16px 0}
+.pill{border:1px solid #d8b66e;border-radius:99px;padding:8px 12px;background:white;color:#764153;font-size:13px}
+main{max-width:960px;margin:auto;padding:10px 14px 34px}
+h2{font-family:Georgia,serif;color:var(--deep);font-size:25px;font-weight:normal;margin:20px 0 12px}
+.categories{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px}
+.cat{border:1px solid #e6bdc9;background:#fff;border-radius:99px;padding:9px 13px;color:var(--deep);cursor:pointer}
+.cat.active{background:var(--rose);color:#fff;border-color:var(--rose)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:12px}
+.item{background:#fff;border:1px solid #f0dbe1;border-radius:16px;padding:15px;box-shadow:0 4px 14px #7a35400c;display:flex;flex-direction:column;gap:8px}
+.item h3{font-size:17px;margin:0;color:#542b39}.desc{font-size:13px;line-height:1.45;color:#816a71;flex:1}
+.price-row{display:flex;align-items:center;justify-content:space-between;gap:8px}.price{font-weight:bold;color:var(--deep);font-size:17px}
+.add{background:#fff1f4;border:1px solid #d8a5b4;border-radius:9px;color:var(--deep);padding:9px 12px;font-weight:bold;cursor:pointer}.add.selected{background:var(--rose);color:white;border-color:var(--rose)}
+.note{font-size:12px;color:#8b6c74;margin-top:12px}
+.booking{position:sticky;bottom:0;background:#fffdfd;border-top:1px solid #e8cbd3;padding:12px 14px;box-shadow:0 -5px 18px #63303b12;z-index:3}
+.booking-inner{max-width:960px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.total{font-size:14px;color:#684550}.total strong{display:block;color:var(--deep);font-size:19px;margin-top:3px}
+.whatsapp{background:#218c57;color:#fff;border:0;border-radius:12px;padding:13px 18px;font-size:15px;font-weight:bold;cursor:pointer}.whatsapp:disabled{opacity:.45;cursor:not-allowed}
+footer{text-align:center;padding:20px 14px 90px;color:#8b6c74;font-size:12px}
+@media(max-width:520px){.booking-inner{align-items:stretch}.total{flex:1}.whatsapp{width:100%}}
+</style></head>
+<body>
+<header><p class="brand">Tanuja</p><div class="sub">Beauty Parlour</div><p class="tagline">Look Good · Feel Beautiful · Be You</p></header>
+<section class="hero"><h1>Your beauty, your moment</h1><p>Explore our services, choose what you love, and send an appointment request on WhatsApp.</p><div class="pills"><span class="pill">Facial & Skin Care</span><span class="pill">Hair Care</span><span class="pill">Threading & Waxing</span><span class="pill">Makeup & Bridal</span></div></section>
+<main><h2>Our Services</h2><div id="categories" class="categories"></div><div id="services" class="grid"></div><p class="note">Prices shown are editable sample prices. Please confirm the final services and rates with the parlour before publishing.</p></main>
+<div class="booking"><div class="booking-inner"><div class="total"><span id="count">0 services selected</span><strong id="total">Total: ₹0</strong></div><button class="whatsapp" id="book" disabled>Book on WhatsApp</button></div></div>
+<footer>© <span id="year"></span> Tanuja Beauty Parlour · Please message us to confirm availability and final pricing.</footer>
+<script>
+const WHATSAPP_NUMBER = "919392331654";
+const services = [
+{category:"Facial & Skincare",name:"Basic Cleanup",price:499,description:"Deep cleansing for fresh-looking skin"},
+{category:"Facial & Skincare",name:"Fruit Facial",price:899,description:"A refreshing facial treatment"},
+{category:"Facial & Skincare",name:"Gold Facial",price:1299,description:"A glow-focused facial treatment"},
+{category:"Hair Care",name:"Haircut",price:299,description:"Haircut and basic styling"},
+{category:"Hair Care",name:"Hair Spa",price:799,description:"Hair and scalp care treatment"},
+{category:"Hair Care",name:"Hair Wash & Blow Dry",price:399,description:"Wash and blow-dry styling"},
+{category:"Threading & Waxing",name:"Eyebrow Threading",price:50,description:"Eyebrow shaping"},
+{category:"Threading & Waxing",name:"Upper Lip Threading",price:30,description:"Quick upper-lip threading"},
+{category:"Threading & Waxing",name:"Full Arms Waxing",price:399,description:"Waxing service for both arms"},
+{category:"Manicure & Pedicure",name:"Basic Manicure",price:299,description:"Nail shaping and hand care"},
+{category:"Manicure & Pedicure",name:"Basic Pedicure",price:399,description:"Foot care and nail grooming"},
+{category:"Makeup & Bridal",name:"Party Makeup",price:1999,description:"Makeup for parties and special occasions"},
+{category:"Makeup & Bridal",name:"Bridal Makeup",price:7999,description:"Bridal makeup; consultation recommended"},
+{category:"Mehendi",name:"Mehendi Design",price:499,description:"Starting price; final rate depends on design"}
+];
+const cats=["All Services",...new Set(services.map(s=>s.category))];let active="All Services";const selected=new Set();
+function renderCategories(){const el=document.getElementById("categories");el.innerHTML="";cats.forEach(c=>{const b=document.createElement("button");b.className="cat"+(active===c?" active":"");b.textContent=c;b.onclick=()=>{active=c;renderCategories();renderServices()};el.appendChild(b)})}
+function renderServices(){const el=document.getElementById("services");el.innerHTML="";services.filter(s=>active==="All Services"||s.category===active).forEach(s=>{const i=services.indexOf(s),chosen=selected.has(i),card=document.createElement("article");card.className="item";const h=document.createElement("h3");h.textContent=s.name;const d=document.createElement("div");d.className="desc";d.textContent=s.description;const row=document.createElement("div");row.className="price-row";const p=document.createElement("span");p.className="price";p.textContent="₹"+s.price.toLocaleString("en-IN");const b=document.createElement("button");b.className="add"+(chosen?" selected":"");b.textContent=chosen?"✓ Added":"＋ Add";b.onclick=()=>{selected.has(i)?selected.delete(i):selected.add(i);renderServices();updateBooking()};row.append(p,b);card.append(h,d,row);el.appendChild(card)})}
+function updateBooking(){const chosen=[...selected].map(i=>services[i]),total=chosen.reduce((sum,s)=>sum+s.price,0);document.getElementById("count").textContent=chosen.length+" service"+(chosen.length===1?"":"s")+" selected";document.getElementById("total").textContent="Total: ₹"+total.toLocaleString("en-IN");document.getElementById("book").disabled=chosen.length===0}
+document.getElementById("book").onclick=()=>{const chosen=[...selected].map(i=>services[i]),list=chosen.map(s=>"• "+s.name+" — ₹"+s.price).join("\n"),total=chosen.reduce((sum,s)=>sum+s.price,0),message="Hello Tanuja Beauty Parlour! I'd like to request an appointment.\n\nSelected services:\n"+list+"\n\nEstimated total: ₹"+total+"\n\nMy name: \nPreferred date/time: \nPlease confirm availability and final price.";window.open("https://wa.me/"+WHATSAPP_NUMBER+"?text="+encodeURIComponent(message),"_blank","noopener")};
+document.getElementById("year").textContent=new Date().getFullYear();renderCategories();renderServices();updateBooking();
+</script></body></html>
